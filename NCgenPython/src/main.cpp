@@ -8,12 +8,14 @@
 
 #include "global.h"
 
+// I'd probably use some macros for this
 const char* filename     = "default";
 std::string version      = "0.0.1";
 std::string content      = "";
 std::string post_content = "";
 bool        importTime   = false;
 
+// explanitory comment needed
 constexpr unsigned int strint(const char* str, int h = 0)
 {
     return !str[h] ? 5381 : (strint(str, h + 1) * 33) ^ str[h];
@@ -25,21 +27,18 @@ int main(int argc, char* argv[])
     console_log("Version : " + version);
     console_log("Target : Python");
 
-    for (int i = 0; i < argc; ++i)
+    if (argc < 2)
     {
-        if (argv[i] != argv[0])
-        {
-            filename = argv[i];
-            console_log(filename);
-        }
+        std::cerr << "Please specify the input file as the first cli parameter" << std::endl;
+        std::exit(EXIT_FAILURE);
     }
+    filename = argv[1];
+    console_log(filename);
+
     console_log("Starting generation process... \n");
 
-    std::filesystem::path filepath = filename;
-    std::string           filepathwithoutfileextension =
-        (filepath.replace_extension())
-            .string(); // Sorry for this horrible naming,
-    // I am tired So am I;)
+    std::filesystem::path filepath                     = filename;
+    std::string           filepathwithoutfileextension = (filepath.replace_extension()).string(); // Sorry for this horrible naming, I am tired
 
     std::ofstream writefile(filepathwithoutfileextension + ".py");
 
@@ -111,6 +110,7 @@ int main(int argc, char* argv[])
             append_content("time.sleep(" + parameter + ")");
             break;
 
+        // comments are badly needed
         default:
             if (filestr.substr(0, filestr.find(" ")).find("js") !=
                 std::string::npos)

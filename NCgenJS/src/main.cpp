@@ -8,6 +8,7 @@
 
 #include "global.h"
 
+// use macros here
 const char* filename        = "default";
 std::string version         = "0.0.1";
 std::string content         = "";
@@ -15,6 +16,7 @@ std::string post_content    = "";
 bool        exportHtml      = false;
 bool        exportHtmlIndex = false;
 
+// should probably be put into utils static lib
 constexpr unsigned int strint(const char* str, int h = 0)
 {
     return !str[h] ? 5381 : (strint(str, h + 1) * 33) ^ str[h];
@@ -26,14 +28,14 @@ int main(int argc, char* argv[])
     console_log("Version : " + version);
     console_log("Target : JavaScript");
 
-    for (int i = 0; i < argc; ++i)
+
+    if (argc < 2)
     {
-        if (argv[i] != argv[0])
-        {
-            filename = argv[i];
-            console_log(filename);
-        }
+        std::cerr << "Please specify the input file as the first cli parameter" << std::endl;
+        std::exit(EXIT_FAILURE);
     }
+    filename = argv[1];
+    console_log(filename);
     console_log("Starting generation process... \n");
 
     std::filesystem::path filepath                     = filename;
