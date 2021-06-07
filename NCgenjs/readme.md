@@ -1,0 +1,2 @@
+# ncgen > JavaScript
+Targets JavaScript.
