@@ -16,7 +16,7 @@ std::string post_content    = "";
 bool        exportHtml      = false;
 bool        exportHtmlIndex = false;
 
-// should probably be put into utils static lib
+// should probably be put into utils static lib -> can be used by many projects
 constexpr unsigned int strint(const char* str, int h = 0)
 {
     return !str[h] ? 5381 : (strint(str, h + 1) * 33) ^ str[h];
@@ -24,10 +24,11 @@ constexpr unsigned int strint(const char* str, int h = 0)
 
 int main(int argc, char* argv[])
 {
+    // you usually don't do something like this but well...
+    // do whatever floats your boat, I guess
     console_log("-- NCGEN --");
     console_log("Version : " + version);
     console_log("Target : JavaScript");
-
 
     if (argc < 2)
     {
@@ -45,6 +46,7 @@ int main(int argc, char* argv[])
     std::string   filestr;
     std::string   parameter = "";
 
+    // I mean, yeah, this does work but for a real language you'd need some sort of parser
     while (std::getline(file, filestr))
     {
         parameter = filestr.substr(filestr.find(" ") + 1);
@@ -134,7 +136,9 @@ int main(int argc, char* argv[])
             exportHtmlIndex = true;
             break;
 
-            // JS-HTML SPECIFIC
+            //////////////////////
+            // JS-HTML SPECIFIC //
+            //////////////////////
 
         case strint("html.addtag"):
             if (exportHtml)
